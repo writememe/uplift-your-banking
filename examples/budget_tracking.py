@@ -39,7 +39,7 @@ if __name__ == "__main__":
         start_timestamp=six_weeks_ago_timestamp,
         end_timestamp=timestamp_now,
         input_budget_dir=INPUT_DIR,
-        input_filename="budget.csv",
+        input_filename="budget-example.csv",
         output_dir=OUTPUT_DIR,
         output_filename=f"{timestamp_for_filename}-budget_vs_spend.xlsx",
         lower_variance_limit=lower_variance_limit,

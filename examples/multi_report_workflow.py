@@ -12,14 +12,21 @@ sys.path.append(BASE_REPO_PATH)
 
 # Import modules
 
-from src.helpers.up_toolkit import (
+from src.helpers.up_toolkit import (  # noqa (import not at top)
     perform_all_tag_account_analysis,
     perform_budget_versus_spend_tag_analysis,
     retrieve_untagged_withdrawals,
 )
-from src.shared.logging.logger import InternalLogger  # noqa
-from src.shared.settings import DEFAULT_LOG_FILE, INPUT_DIR, OUTPUT_DIR, TIMESTAMP
-from src.transformers.time_transformers import calculate_n_months_ago_to_timestamp, calculate_n_weeks_ago_to_timestamp
+from src.shared.logging.logger import InternalLogger  # noqa (import not at top)
+from src.shared.settings import (  # noqa (import not at top)
+    DEFAULT_LOG_FILE,
+    INPUT_DIR,
+    OUTPUT_DIR,
+    TIMESTAMP,
+)
+from src.transformers.time_transformers import (  # noqa (import not at top)
+    calculate_n_months_ago_to_timestamp,
+)
 
 # Setting logging level to informational
 log_level = "INFO"
@@ -42,7 +49,7 @@ if __name__ == "__main__":
         start_timestamp=one_month_ago_timestamp,
         end_timestamp=timestamp_now,
         input_budget_dir=INPUT_DIR,
-        input_filename="budget.csv",
+        input_filename="budget-example.csv",
         output_dir=OUTPUT_DIR,
         output_filename=f"{timestamp_for_filename}-budget_vs_spend.xlsx",
         lower_variance_limit=lower_variance_limit,
