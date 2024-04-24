@@ -7,7 +7,7 @@
 
 A Python toolkit to manage your budgeting and tracking of your [Up Bank accounts](https://up.com.au/).
 
-This is built on the good work of [@jcwillox](https://github.com/jcwillox) who did the hard work with created the [up-bank-api client](https://github.com/jcwillox/up-bank-api)
+This is built on the work of [@jcwillox](https://github.com/jcwillox) who did the hard yards with creating the [up-bank-api client](https://github.com/jcwillox/up-bank-api)
 
 You can use this toolkit to track your tagged transactions, perform budget variance analysis and perform spend analysis over different time periods.
 
@@ -20,7 +20,7 @@ The following pre-requisites are assumed when using this toolkit:
 - Understanding of Python
 - Python 3.10 or greater installed
 - Ability to read/create CSV and JSON files
-- An [Up Bank account], if you don't have one, feel free to create one using [my invite code](https://hook.up.me/dfjt)
+- An [Up Bank account](https://up.com.au/), if you don't have one, feel free to create one using [my invite code](https://hook.up.me/dfjt)
 - [Poetry installed on your machine](https://python-poetry.org/docs/#installation)
 ## Setup
 
