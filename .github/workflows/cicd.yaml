@@ -1,0 +1,52 @@
+---
+name: CI Code Quality Checks (Linting/Formatting)
+
+on:  # yamllint disable rule:truthy
+    push:
+        branches:
+            - main
+            - feature/initial-dev
+        paths-ignore:
+            - 'README.md'
+            - 'TODO.md'
+    pull_request:
+        branches:
+            - develop
+        paths-ignore:
+            - 'README.md'
+            - 'TODO.md'
+
+
+jobs:
+    test:
+        name: Lint and test
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python-version: ['3.10.7']
+        steps:
+            #----------------------------------------------
+            #       check-out repo and set-up python
+            #----------------------------------------------
+            - name: Check out repository
+              uses: actions/checkout@v4
+            - name: "Setup Python, Poetry and Dependencies"
+              uses: packetcoders/action-setup-cache-python-poetry@v1.2.0
+              with:
+                  python-version: ${{ matrix.python-version }}
+                  poetry-version: 1.8.2
+            - name: ruff format check
+              id: ruff-format
+              run: make ruff-format-check
+            - name: ruff lint check
+              id: ruff-lint
+              run: make ruff-format
+            - name: yamllint check
+              id: yamllint
+              run: make yamllint
+            - name: bandit check
+              id: bandit
+              run: make bandit
+            - name: mypy check
+              id: mypy
+              run: make mypy
