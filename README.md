@@ -1,7 +1,7 @@
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
-[![yamllint](https://img.shields.io/badge/YAML-linter-yamllint-blue)](https://github.com/adrienverge/yamllint)
+[![yamllint](https://img.shields.io/badge/yamllint-blue)](https://github.com/adrienverge/yamllint)
 
 # Uplift your banking with Up
 
