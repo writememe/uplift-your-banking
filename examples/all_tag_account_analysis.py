@@ -29,7 +29,7 @@ if __name__ == "__main__":
     account_name = "2Up Spending"
     # Generate a timestamp, so we can retrieve only the last three months of transactions
     three_months_ago_timestamp = calculate_n_months_ago_to_timestamp(timestamp_as_string=timestamp_now, months_ago=3)
-    # Perform a tag analysis for all tag-based transactions for the last three monthsa nd save to an Excel file
+    # Perform a tag analysis for all tag-based transactions for the last three months and save to an Excel file
     perform_all_tag_account_analysis(
         account_name=account_name,
         start_timestamp=three_months_ago_timestamp,
