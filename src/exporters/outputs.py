@@ -1,5 +1,5 @@
 from src.shared.logging.logger import InternalLogger  # noqa
-from src.shared.settings import DEFAULT_LOG_FILE, OUTPUT_DIR
+from src.shared.settings import DEFAULT_LOG_FILE, OUTPUT_DIR, MAXIMUM_WORKSHEET_NAME_SIZE
 import pandas as pd
 import os
 from typing import Dict
@@ -58,7 +58,15 @@ def output_dfs_to_excel(
     # Iterate over worksheet name (the dict key) and the pandas dataframe (the dict value) and
     # save the dataframe to a new worksheet
     for worksheet_name, df in df_list.items():
+        # Trim any potential worksheet names which exceed the maximum allowed length for a
+        # worksheet name.
+        if len(worksheet_name) > MAXIMUM_WORKSHEET_NAME_SIZE:
+            worksheet_name = worksheet_name[:MAXIMUM_WORKSHEET_NAME_SIZE]
         logger.info(f"Saving worksheet: {worksheet_name}")
+        # Format any datetime columns to strings, so it can be saved to an Excel file
+        date_columns = df.select_dtypes(include=["datetime64[ns, UTC]"]).columns
+        for date_column in date_columns:
+            df[date_column] = df[date_column].dt.strftime("%Y/%m/%d-%H:%M:%S")
         df.to_excel(writer, sheet_name=worksheet_name, index=False)
     # Close the Pandas Excel writer and output the Excel file.
     writer.close()

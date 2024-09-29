@@ -38,7 +38,7 @@ if __name__ == "__main__":
     timestamp_for_filename = TIMESTAMP.replace(":", "-").replace(" ", "-")
     # Retrieve the account that you want to perform the analysis on, in our example it's a 2Up Spending account
     account_name = "2Up Spending"
-    one_month_ago_timestamp = calculate_n_months_ago_to_timestamp(timestamp_as_string=timestamp_now)
+    one_month_ago_timestamp = calculate_n_months_ago_to_timestamp(timestamp_as_string=timestamp_now, months_ago=12)
     # Perform a budget vs spend analysis for the last six weeks and save to an Excel file.
     # Set your lower and upper variance limits across all tag budgets. This allows you to see what is over or under an
     # acceptance range, based on your criteria.
