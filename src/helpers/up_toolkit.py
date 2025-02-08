@@ -3,9 +3,12 @@
 # Import modules
 import sys
 from datetime import datetime
+from os import environ
 from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
+from google.oauth2.service_account import Credentials
+from googleapiclient.discovery import Resource, build
 from upbankapi import Client, NotAuthorizedException
 from upbankapi.models import PaginatedList, Transaction
 from upbankapi.models.accounts import Account
@@ -475,3 +478,31 @@ def retrieve_untagged_withdrawals(
     }
     report_file = output_dfs_to_excel(df_list=df_list, output_dir=output_dir, filename=output_filename)
     return report_file
+
+
+def initialise_google_drive_client() -> Resource:
+    """Initializes and returns a Google Drive API client.
+
+    This function reads the service account key file path from the
+    environment variable `GOOGLE_SERVICE_ACCOUNT_FILE`, authenticates using
+    Google Service Account credentials, and returns a Google Drive v3 service client.
+
+    Returns:
+        Resource: An authenticated Google Drive API client.
+
+    Raises:
+        RuntimeError: If the environment variable `GOOGLE_SERVICE_ACCOUNT_FILE` is not set.
+    """
+    # Path to your service account key file
+    service_account_file: Optional[str] = environ.get("GOOGLE_SERVICE_ACCOUNT_FILE")
+    if not service_account_file:
+        raise RuntimeError("Environmental variable 'GOOGLE_SERVICE_ACCOUNT_FILE' not set, please set and try again")
+
+    # Define the scopes
+    SCOPES = ["https://www.googleapis.com/auth/drive.file"]
+
+    # Authenticate using the service account
+    credentials = Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
+    drive_service: Resource = build("drive", "v3", credentials=credentials)
+
+    return drive_service

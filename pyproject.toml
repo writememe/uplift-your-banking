@@ -62,6 +62,10 @@ up-bank-api = "^1.1.0"
 pandas = "^2.2.2"
 xlsxwriter = "^3.2.0"
 pytz = "^2024.1"
+google-api-python-client = "^2.160.0"
+google-auth = "^2.38.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.7"

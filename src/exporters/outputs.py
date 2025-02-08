@@ -3,6 +3,8 @@ from src.shared.settings import DEFAULT_LOG_FILE, OUTPUT_DIR, MAXIMUM_WORKSHEET_
 import pandas as pd
 import os
 from typing import Dict
+from googleapiclient.discovery import Resource
+from googleapiclient.http import MediaFileUpload
 
 # Setting logging level to informational
 log_level = "INFO"
@@ -73,3 +75,28 @@ def output_dfs_to_excel(
     # Diagnostic printout
     logger.info(f"Excel results are available at: {excel_file}")
     return excel_file
+
+
+def upload_file_to_google_drive(file_path: str, folder_id: str, file_type: str, drive_client: Resource):
+    """TODO."""
+    mime_type_mapper: Dict[str, str] = {
+        "csv": "text/csv",
+        "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    }
+    mime_type = mime_type_mapper.get(file_type)
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+    file_name = os.path.basename(file_path)  # Extract just the file name
+    mime_type = mime_type_mapper.get(file_type)
+
+    file_metadata = {"name": file_name}
+    if folder_id:
+        file_metadata["parents"] = [folder_id]  # Upload to a specific folder
+
+    media = MediaFileUpload(file_path, mimetype=mime_type)
+
+    file = drive_client.files().create(body=file_metadata, media_body=media, fields="id").execute()
+
+    print(f"Uploaded file ID: {file.get('id')}")
+    return file.get("id")

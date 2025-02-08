@@ -16,6 +16,7 @@ from src.helpers.up_toolkit import (  # noqa (import not at top)
     perform_all_tag_account_analysis,
     perform_budget_versus_spend_tag_analysis,
     retrieve_untagged_withdrawals,
+    initialise_google_drive_client,
 )
 from src.shared.logging.logger import InternalLogger  # noqa (import not at top)
 from src.shared.settings import (  # noqa (import not at top)
@@ -28,6 +29,7 @@ from src.transformers.time_transformers import (  # noqa (import not at top)
     calculate_n_months_ago_to_timestamp,
     calculate_n_weeks_ago_to_timestamp,
 )
+from src.exporters.outputs import upload_file_to_google_drive  # noqa (import not at top)
 
 # Setting logging level to informational
 log_level = "INFO"
@@ -59,7 +61,7 @@ def perform_last_week_transaction_analysis(
     """
     one_week_ago_timestamp = calculate_n_weeks_ago_to_timestamp(timestamp_as_string=start_timestamp, weeks_ago=1)
     timestamp_for_filename = TIMESTAMP.replace(":", "-").replace(" ", "-")
-    perform_budget_versus_spend_tag_analysis(
+    a = perform_budget_versus_spend_tag_analysis(
         account_name=account_name,
         start_timestamp=one_week_ago_timestamp,
         end_timestamp=start_timestamp,
@@ -71,20 +73,30 @@ def perform_last_week_transaction_analysis(
         upper_variance_limit=upper_variance_limit,
     )
     # Perform a tag analysis for all tag-based transactions for the last week and save to an Excel file
-    perform_all_tag_account_analysis(
+    b, _ = perform_all_tag_account_analysis(
         account_name=account_name,
         start_timestamp=one_week_ago_timestamp,
         end_timestamp=start_timestamp,
         output_filename=f"{timestamp_for_filename}-last_week_all_tag_based_analysis.xlsx",
     )
     # Retrieve the last week of withdrawals, which don't contain a tag and save to an Excel file
-    retrieve_untagged_withdrawals(
+    c = retrieve_untagged_withdrawals(
         account_name=account_name,
         start_timestamp=one_week_ago_timestamp,
         end_timestamp=start_timestamp,
         output_dir=OUTPUT_DIR,
         output_filename=f"{timestamp_for_filename}-last_week_untagged-withdrawals.xlsx",
     )
+    drive_client = initialise_google_drive_client()
+    upload_file_to_google_drive(
+        file_path=a, folder_id="1X7gsxRg7uHEaSc2PiUJz9pWO65ynwRbu", file_type="xlsx", drive_client=drive_client
+    )  # noqa
+    upload_file_to_google_drive(
+        file_path=b, folder_id="1X7gsxRg7uHEaSc2PiUJz9pWO65ynwRbu", file_type="xlsx", drive_client=drive_client
+    )  # noqa
+    upload_file_to_google_drive(
+        file_path=c, folder_id="1X7gsxRg7uHEaSc2PiUJz9pWO65ynwRbu", file_type="xlsx", drive_client=drive_client
+    )  # noqa
     pass
 
 
